@@ -1,4 +1,5 @@
 ﻿using Eco.Gameplay.Components;
+using Eco.Gameplay.Components.Storage;
 using Eco.Gameplay.Items;
 using Eco.Gameplay.Objects;
 using Eco.Gameplay.Players;
@@ -98,7 +99,7 @@ namespace Eco.EM.Framework.ModTools.Testing
                 }
                 catch
                 {
-                    user.MsgLocStr(string.Format($"Unable to place {0}. Skipped placement, make report.", itemList[i].Name));
+                    user.MsgLocStr($"Unable to place {itemList[i].Name}. Skipped placement, make report.");
                     i++;
                 }
             }
@@ -120,7 +121,7 @@ namespace Eco.EM.Framework.ModTools.Testing
                 }
                 catch
                 {
-                    user.MsgLocStr(string.Format($"Unable to place {0}. Skipped placement, make report.", obj.Name));
+                    user.MsgLocStr($"Unable to place {obj.Name}. Skipped placement, make report.");
                 }
             }
         }

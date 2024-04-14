@@ -98,12 +98,12 @@ namespace Eco.EM.Framework.Components
                     switch (obj)
                     {
                         case DoorObject wo when Parent is WorldObject:
-                            if (wo.Open && (PlayerSensor.AuthorizedPersonnelNear(wo, (int)DetectionRange) || wo.Open && PlayerSensor.AnyoneNear(wo, (int)DetectionRange) && AllowGuests))
+                            if (wo.GetComponent<DoorComponent>().IsOpen && (PlayerSensor.AuthorizedPersonnelNear(wo, (int)DetectionRange) || wo.GetComponent<DoorComponent>().IsOpen && PlayerSensor.AnyoneNear(wo, (int)DetectionRange) && AllowGuests))
                                 return;
                             else if (PlayerSensor.AnyoneNear(wo, (int)DetectionRange) && AllowGuests)
-                                wo.SetOpen(PlayerSensor.AnyoneNear(wo, (int)DetectionRange));
+                                wo.GetComponent<DoorComponent>().SetOpen(PlayerSensor.UserNear(wo, (int)DetectionRange), PlayerSensor.AnyoneNear(wo, (int)DetectionRange));
                             else
-                                wo.SetOpen(PlayerSensor.AuthorizedPersonnelNear(wo, (int)DetectionRange));
+                                wo.GetComponent<DoorComponent>().SetOpen(PlayerSensor.UserNear(wo, (int)DetectionRange), PlayerSensor.AuthorizedPersonnelNear(wo, (int)DetectionRange));
                             break;
 
                         case EmDoor woe when Parent is WorldObject:

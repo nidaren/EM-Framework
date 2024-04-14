@@ -1,7 +1,7 @@
 ﻿using Eco.Core.Plugins;
 using Eco.Core.Plugins.Interfaces;
 using Eco.Core.Utils;
-using Eco.Gameplay.Housing.PropertyValues;
+using Eco.Gameplay.Housing;
 using Eco.Gameplay.Players;
 using Eco.Gameplay.Systems.Messaging.Chat.Commands;
 using Eco.Shared.Localization;
@@ -12,8 +12,7 @@ namespace Eco.EM.Framework.Resolvers
 {
     [LocDisplayName("EM Housing Value Plugin")]
     [ChatCommandHandler]
-    [PriorityAfter(typeof(HomeFurnishingValue))]
-    public class EMHousingValuePlugin : Singleton<EMHousingValuePlugin>, IModKitPlugin, IConfigurablePlugin, IInitializablePlugin
+    public class EMHousingValuePlugin : Singleton<EMHousingValuePlugin>, IModKitPlugin, IConfigurablePlugin, IModInit
     {
         private static readonly PluginConfig<EMHousingValueConfig> config;
         public IPluginConfig PluginConfig => config;
@@ -29,13 +28,10 @@ namespace Eco.EM.Framework.Resolvers
             config = new PluginConfig<EMHousingValueConfig>("EMHousingValue");
         }
 
-        public static void Initialize()
+        public static void PostInitialize()
         {
-            Task.Run(() => { 
-            
-                EMHousingResolver.Obj.Initialize();
+                EMHousingResolver.Initialize();
                 config.SaveAsync();
-            });
         }
 
         public override string ToString() => Localizer.DoStr("EM Housing Value");
@@ -56,10 +52,5 @@ namespace Eco.EM.Framework.Resolvers
         }
 
         public string GetCategory() => "EM Configure";
-
-        public void Initialize(TimedTask timer)
-        {
-            Initialize();
-        }
     }
 }

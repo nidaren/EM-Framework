@@ -1,4 +1,5 @@
-﻿using Eco.Core.Plugins;
+﻿using Eco.Core;
+using Eco.Core.Plugins;
 using Eco.Core.Plugins.Interfaces;
 using Eco.Core.Utils;
 using Eco.Gameplay.Players;
@@ -20,7 +21,7 @@ namespace Eco.EM.Framework.Resolvers
 
         public object GetEditObject() => config.Config;
         public void OnEditObjectChanged(object o, string param) => this.SaveConfig();
-        public string GetStatus() => "Loaded EM Stack Sizes";
+        public string GetStatus() => $"Loaded EM Stack Sizes: {EMStackSizeResolver.Overriden}";
 
         static EMStackSizesPlugin()
         {

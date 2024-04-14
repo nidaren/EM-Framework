@@ -73,8 +73,8 @@ namespace Eco.EM.Framework.Resolvers
     [LocDisplayName("Recipe Model")]
     public class RecipeModel : ModelBase
     {
-        [LocDisplayName("Crafting Experience - Baseline Value")] public float BaseExperienceOnCraft { get; set; }
         [LocDisplayName("Recipe Name")] public string LocalizableName { get; set; }
+        [LocDisplayName("Crafting Experience - Baseline Value")] public float BaseExperienceOnCraft { get; set; }
         [LocDisplayName("Labor - Baseline Value")] public float BaseLabor { get; set; }
         [LocDisplayName("Labor - Is Static")] public bool LaborIsStatic { get; set; }
         [LocDisplayName("Craft Time - Baseline Value")] public float BaseCraftTime { get; set; }

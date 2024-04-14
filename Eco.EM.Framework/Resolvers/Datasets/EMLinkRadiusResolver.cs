@@ -1,7 +1,6 @@
 ﻿using Eco.Core.Utils;
 using Eco.Shared.Localization;
 using Eco.Shared.Utils;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,12 +10,12 @@ namespace Eco.EM.Framework.Resolvers
 
     public class EMLinkRadiusResolver : AutoSingleton<EMLinkRadiusResolver>
     {
-        public ConcurrentDictionary<string, LinkModel> DefaultLinkOverrides { get; private set; } = new();
-        public ConcurrentDictionary<string, LinkModel> LoadedLinkOverrides { get; private set; } = new();
+        public Dictionary<string, LinkModel> DefaultLinkOverrides { get; private set; } = new();
+        public Dictionary<string, LinkModel> LoadedLinkOverrides { get; private set; } = new();
 
         public static void AddDefaults(LinkModel defaults)
         {
-            Obj.DefaultLinkOverrides.TryAdd(defaults.ModelType, defaults);
+            Obj.DefaultLinkOverrides.Add(defaults.ModelType, defaults);
         }
 
         public float ResolveLinkRadius(ILinkRadiusObject obj) => GetRadius(obj);
@@ -55,13 +54,14 @@ namespace Eco.EM.Framework.Resolvers
                 else
                     newModels.Add(lModel);
             }
+            newModels.OrderBy(x => x.ModelType);
 
             EMLinkDistancesPlugin.Config.EMLinkDistances = newModels;
 
             foreach (var model in newModels)
             {
                 if (!LoadedLinkOverrides.ContainsKey(model.ModelType))
-                    LoadedLinkOverrides.TryAdd(model.ModelType, model);
+                    LoadedLinkOverrides.Add(model.ModelType, model);
             }
         }
     }

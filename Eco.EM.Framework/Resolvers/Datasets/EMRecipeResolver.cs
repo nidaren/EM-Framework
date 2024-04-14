@@ -10,6 +10,7 @@ using Eco.EM.Framework.Utils;
 using Eco.Gameplay.Skills;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using Eco.Gameplay.Items.Recipes;
 
 // This mod is created by Elixr Mods for Eco under the SLG TOS. 
 // Please feel free to join our community Discord which aims to brings together modders of Eco to share knowledge, 
@@ -43,7 +44,7 @@ namespace Eco.EM.Framework.Resolvers
 
         public static void AddDefaults(RecipeDefaultModel defaults)
         {
-            Obj.LoadedDefaultRecipes.TryAdd(defaults.ModelType, defaults);
+            Obj.LoadedDefaultRecipes.AddUnique(defaults.ModelType, defaults);
         }
 
         // Individual RecipeFamily part resolvers.
@@ -61,7 +62,7 @@ namespace Eco.EM.Framework.Resolvers
             var dModel = LoadedDefaultRecipes[recipe.GetType().Name];
             // check if config override
             var loaded = LoadedConfigRecipes.TryGetValue(recipe.GetType().Name, out RecipeModel model);
-            if (loaded && model.LocalizableName.Equals(dModel.LocalizableName))
+            if (loaded && model.LocalizableName != dModel.LocalizableName)
                 return Localizer.DoStr(model.LocalizableName);
 
             // check if mod override
@@ -316,10 +317,10 @@ namespace Eco.EM.Framework.Resolvers
 
 
         // SLG code for creating IDynamicValues of RecipeFamilies
-        private static IDynamicValue CreateCraftTimeValue(float start) => new ConstantValue(start * RecipeFamily.CraftTimeModifier);
+        private static IDynamicValue CreateCraftTimeValue(float start) => new ConstantValue(start * RecipeManager.CraftTimeModifier);
         private static IDynamicValue CreateCraftTimeValue(Type beneficiary, float start, Type skillType, params Type[] talents)
         {
-            var smv = new ModuleModifiedValue(start * RecipeFamily.CraftTimeModifier, skillType, DynamicValueType.Speed);
+            var smv = new ModuleModifiedValue(start * RecipeManager.CraftTimeModifier, skillType, DynamicValueType.Speed);
             return talents != null
                 ? new MultiDynamicValue(MultiDynamicOps.Multiply, talents.Select(x => new TalentModifiedValue(beneficiary, x) as IDynamicValue).Concat(new[] { smv }).ToArray())
                 : smv;
@@ -357,17 +358,24 @@ namespace Eco.EM.Framework.Resolvers
                 foreach (var dModel in loadtypes)
                 {
                     var m = previousModels.FirstOrDefault(x => x.ModelType == dModel.ModelType);
-                    if (m != null && EMConfigurePlugin.Config.useConfigOverrides && !m.Equals(dModel))
+                    if (m != null && !m.ModelType.EqualsCaseInsensitive(dModel.ModelType))
                     {
+                        if (!newModels.Contains(m))
+                        {
                             newModels.Add(m);
+                        }
 #if DEBUG
                     ConsoleColors.PrintConsoleMultiColored("[EM Framework] ", ConsoleColor.Magenta, Localizer.DoStr($"Loaded Config Override For: {m.ModelType}"), ConsoleColor.Yellow);
 #endif
                     }
                     else
-                            newModels.Add(dModel);
+                    {
+                        if(!newModels.Contains(dModel))
+                        newModels.Add(dModel);
+                    }
                 }
             }
+            newModels.OrderBy(x => x.ModelType);
             EMRecipesPlugin.Config.EMRecipes = newModels;
 
             foreach (var model in EMRecipesPlugin.Config.EMRecipes)

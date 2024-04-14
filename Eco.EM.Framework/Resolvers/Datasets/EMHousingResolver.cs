@@ -1,30 +1,27 @@
 ﻿using Eco.Core.Utils;
 using Eco.EM.Framework.Utils;
 using Eco.Gameplay.Housing.PropertyValues;
+using Eco.Mods.TechTree;
 using Eco.Shared.Localization;
 using Eco.Shared.Utils;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Eco.EM.Framework.Resolvers
 {
     public interface IConfigurableHousing { }
 
-    public class EMHousingResolver : Singleton<EMHousingResolver>
+    public class EMHousingResolver : AutoSingleton<EMHousingResolver>
     {
-        public ConcurrentDictionary<string, HousingModel> DefaultHomeOverrides { get; private set; } = new();
-        public ConcurrentDictionary<string, HousingModel> LoadedHomeOverrides { get; private set; } = new();
+        public Dictionary<string, HousingModel> DefaultHomeOverrides { get; private set; } = new();
+        public Dictionary<string, HousingModel> LoadedHomeOverrides { get; private set; } = new();
 
         public HomeFurnishingValue ResolveHomeValue(Type housing) => GetHomeValue(housing);
 
         public static void AddDefaults(HousingModel defaults)
         {
-            var yes = Obj.DefaultHomeOverrides.TryAdd(defaults.ModelType, defaults);
-            if (yes)
-                System.Console.WriteLine($"{defaults.DisplayName} added");
+            Obj.DefaultHomeOverrides.TryAdd(defaults.ModelType, defaults);
         }
 
         private HomeFurnishingValue GetHomeValue(Type housingItem)
@@ -48,10 +45,10 @@ namespace Eco.EM.Framework.Resolvers
         {
             var HomeValue = new HomeFurnishingValue()
             {
-                Category = string.IsNullOrEmpty(HousingConfig.GetRoomCategory(model.RoomType).Name) ? HousingConfig.GetRoomCategory("Decoration") : HousingConfig.GetRoomCategory(model.RoomType),
-                HouseValue = model.SkillValue,
+                Category = HousingConfig.GetRoomCategory(model.RoomType.Name),
+                BaseValue = model.SkillValue,
                 TypeForRoomLimit = Localizer.DoStr(model.TypeForRoomLimit),
-                DiminishingReturnPercent = model.DiminishingReturn
+                DiminishingReturnMultiplier = model.DiminishingReturn
             };
 
             return HomeValue;
@@ -61,16 +58,16 @@ namespace Eco.EM.Framework.Resolvers
         {
             var HomeValue = new HomeFurnishingValue()
             {
-                Category = string.IsNullOrEmpty(HousingConfig.GetRoomCategory(def.RoomType).Name) ? HousingConfig.GetRoomCategory("Decoration") : HousingConfig.GetRoomCategory(def.RoomType),
-                HouseValue = def.SkillValue,
+                Category = HousingConfig.GetRoomCategory(def.RoomType.Name),
+                BaseValue = def.SkillValue,
                 TypeForRoomLimit = Localizer.DoStr(def.TypeForRoomLimit),
-                DiminishingReturnPercent = def.DiminishingReturn
+                DiminishingReturnMultiplier = def.DiminishingReturn
             };
 
             return HomeValue;
         }
 
-        public async void Initialize()
+        public static void Initialize()
         {
             SerializedSynchronizedCollection<HousingModel> newModels = new();
             var previousModels = newModels;
@@ -80,55 +77,36 @@ namespace Eco.EM.Framework.Resolvers
             }
             catch
             {
-                previousModels = newModels;
+                previousModels = new();
             }
             foreach (var type in typeof(IConfigurableHousing).ConcreteTypes())
             {
                 System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
             }
 
-           await Task.Run(() => {
-                var loadtypes = DefaultHomeOverrides.Values.ToList();
-                // for each type that exists that we are trying to load
-                foreach (var lModel in loadtypes)
+            var loadtypes = Obj.DefaultHomeOverrides.Values.ToList();
+
+            // for each type that exists that we are trying to load
+            foreach (var lModel in loadtypes)
+            {
+                var m = previousModels.SingleOrDefault(x => x.ModelType == lModel.ModelType);
+
+                if (m != null)
                 {
-                    var m = previousModels.SingleOrDefault(x => x.ModelType == lModel.ModelType);
-
-                    if (lModel.RoomType.Equals("LivingRoom"))
-                        lModel.RoomType = "Living Room";
-                    if (m.RoomType.Equals("LivingRoom"))
-                        m.RoomType = "Living Room";
-
-                    if (m != null)
-                    {
-                        if (HousingConfig.GetRoomCategory(m.RoomType) == null || m.RoomType == "General")
-                        {
-                            ConsoleColors.PrintConsoleMultiColored("[EM Framework] (EM Configure) ", ConsoleColor.Magenta, Localizer.DoStr($"Old Data Found In Housing Data, Performing Migration on {m.DisplayName}"), ConsoleColor.Yellow);
-                            m.RoomType = HousingConfig.GetRoomCategory("Decoration").Name;
-
-                        }
-
-                        newModels.Add(m);
-                    }
-                    else
-                    {
-                        if (HousingConfig.GetRoomCategory(lModel.RoomType) == null || lModel.RoomType == "General")
-                            lModel.RoomType = HousingConfig.GetRoomCategory("Decoration").Name;
-
-                        newModels.Add(lModel);
-                    }
+                    newModels.Add(m);
                 }
-            });
-
-
-
+                else
+                {
+                    newModels.Add(lModel);
+                }
+            }
 
             EMHousingValuePlugin.Config.EMHousingValue = newModels;
 
             foreach (var model in newModels)
             {
-                if (!LoadedHomeOverrides.ContainsKey(model.ModelType))
-                    LoadedHomeOverrides.TryAdd(model.ModelType, model);
+                if (!Obj.LoadedHomeOverrides.ContainsKey(model.ModelType))
+                    Obj.LoadedHomeOverrides.Add(model.ModelType, model);
             }
         }
     }

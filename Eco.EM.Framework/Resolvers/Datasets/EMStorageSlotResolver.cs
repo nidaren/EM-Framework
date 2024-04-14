@@ -1,7 +1,6 @@
 ﻿using Eco.Core.Utils;
 using Eco.Shared.Localization;
 using Eco.Shared.Utils;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,12 +10,12 @@ namespace Eco.EM.Framework.Resolvers
 
     public class EMStorageSlotResolver : AutoSingleton<EMStorageSlotResolver>
     {
-        private ConcurrentDictionary<string, StorageSlotModel> DefaultSlotOverrides { get; set; } = new();
-        private ConcurrentDictionary<string, StorageSlotModel> LoadedSlotOverrides { get; set; } = new();
+        private Dictionary<string, StorageSlotModel> DefaultSlotOverrides { get; set; } = new();
+        private Dictionary<string, StorageSlotModel> LoadedSlotOverrides { get; set; } = new();
 
         public static void AddDefaults(StorageSlotModel defaults)
         {
-            Obj.DefaultSlotOverrides.TryAdd(defaults.ModelType, defaults);
+            Obj.DefaultSlotOverrides.Add(defaults.ModelType, defaults);
         }
 
         public int ResolveSlots(IStorageSlotObject obj) => GetSlots(obj);
@@ -71,12 +70,13 @@ namespace Eco.EM.Framework.Resolvers
                     newModels.Add(lModel);
             }
 
+            newModels.OrderBy(x => x.ModelType);
             EMStorageSlotsPlugin.Config.EMStorageSlots = newModels;
 
             foreach (var model in newModels)
             {
                 if (!LoadedSlotOverrides.ContainsKey(model.ModelType))
-                    LoadedSlotOverrides.TryAdd(model.ModelType, model);
+                    LoadedSlotOverrides.Add(model.ModelType, model);
             }
         }
     }
