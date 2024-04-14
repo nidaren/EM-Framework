@@ -74,12 +74,10 @@ namespace Eco.EM.Framework.Extentsions
             Open = open;
             if (Open)
             {
-                AudioManager.PlayAudio("Doors/DoorOpenSfx", Position);
                 RPCManager.Call("Open", netEntity, null);
             }
             else
             {
-                AudioManager.PlayAudio("Doors/DoorCloseSfx", Position);
                 RPCManager.Call("Close", netEntity, null);
             }
         }

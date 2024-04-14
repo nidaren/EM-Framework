@@ -22,7 +22,7 @@ namespace Eco.EM.Framework.Permissions
         public static bool EMProcessCommand(ChatCommand command, IChatClient chatClient)
         {
             var level = chatClient.GetChatAuthLevel();
-            var adapter = CommandGroupsManager.FindAdapter(command.Name);
+            var adapter = CommandGroupsManager.FindAdapter(Localizer.DoStr(command.Name));
             if (adapter == null)
             {
                 chatClient.ErrorLocStr(string.Format(Defaults.appName + Localizer.DoStr("Command {0} not found"), command.Name));
@@ -41,9 +41,9 @@ namespace Eco.EM.Framework.Permissions
             }
 
             // check the users groups permissions permissions
-            if (GroupsManager.API.UserPermitted(chatClient, adapter))
+            if (chatClient is User invokingUser && GroupsManager.API.UserPermitted(invokingUser, adapter))
             {
-                commandProcessor?.Invoke(command, chatClient);
+                commandProcessor?.Invoke(command, invokingUser);
                 return true;
             }
 

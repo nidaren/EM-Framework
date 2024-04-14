@@ -21,7 +21,6 @@ namespace Eco.EM.Framework.API
     public class Requests : Controller
     {
         [AllowAnonymous, HttpGet("get-recipes")]
-        [Produces("application/json")]
         public IActionResult GetRecipes()
         {
             if (BasePlugin.Obj.Config.EnableWebAPI)
@@ -38,7 +37,6 @@ namespace Eco.EM.Framework.API
         }
 
         [AllowAnonymous, HttpGet("get-prices/{includeOutOfStock:bool?}")]
-        [Produces("application/json")]
         public IActionResult GetPrices(bool includeOutOfStock = false)
         {
             List<OfferedItem> noResult = new();
@@ -55,7 +53,6 @@ namespace Eco.EM.Framework.API
         }
         
         [AllowAnonymous, HttpGet("lookup-user/{username:string?}")]
-        [Produces("application/json")]
         public IActionResult LookupUser(string username = "")
         {
             if (BasePlugin.Obj.Config.EnableWebAPI)

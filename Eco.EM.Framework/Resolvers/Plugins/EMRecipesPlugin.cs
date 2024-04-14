@@ -5,6 +5,7 @@ using Eco.Gameplay.Players;
 using Eco.Gameplay.Systems.Messaging.Chat.Commands;
 using Eco.Shared.Localization;
 using Eco.Shared.Utils;
+using System.IO;
 
 namespace Eco.EM.Framework.Resolvers
 {
@@ -30,7 +31,8 @@ namespace Eco.EM.Framework.Resolvers
         public static void Initialize()
         {
             EMRecipeResolver.Obj.Initialize();
-            config.SaveAsync();
+            if (!File.Exists(Path.Combine("Configs", "EMRecipes.eco")))
+                config.SaveAsync();
         }
 
         public override string ToString() => Localizer.DoStr("EM Recipes");
