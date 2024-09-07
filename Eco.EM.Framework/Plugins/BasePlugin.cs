@@ -10,6 +10,7 @@ using Eco.Gameplay.Players;
 using Eco.Gameplay.Tutorial;
 using Eco.ModKit;
 using Eco.Shared.Localization;
+using Eco.Shared.Logging; //Added Logging items were moved to this using making it required
 using Eco.Shared.Properties;
 using Eco.Shared.Utils;
 using System;
@@ -69,7 +70,7 @@ namespace Eco.EM.Framework.Plugins
             ActionUtil.AddListener(new Listeners.GameActionListener());
 
             //By Default Disable Web API for official Servers
-            if (Eco.Plugins.Networking.NetworkManager.Config.Description.Contains("[SLG]"))
+            if (Eco.Plugins.Networking.NetworkManager.Config.DetailedDescription.Contains("[SLG]")) //Updated from description to DetailedDescription because of game updates
                 Config.EnableWebAPI = false;
             HandleServerCrash();
 

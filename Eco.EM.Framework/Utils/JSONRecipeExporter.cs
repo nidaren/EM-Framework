@@ -8,6 +8,7 @@ using Eco.Gameplay.Items;
 using Eco.Gameplay.Items.Recipes;
 using Eco.Gameplay.Skills;
 using Eco.Shared.Localization;
+using Eco.Shared.Logging; //Added Logging items were moved to this using making it required
 using Eco.Shared.Utils;
 using Newtonsoft.Json;
 using System;

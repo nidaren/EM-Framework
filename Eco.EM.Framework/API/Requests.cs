@@ -1,4 +1,6 @@
-﻿using Eco.Core.Serialization;
+﻿/*using Eco.Core.Serialization;
+using Eco.Core;
+using Eco.Networking; //added
 using Eco.EM.Framework.Utils;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ using Eco.EM.Framework.Helpers;
 using Newtonsoft.Json.Converters;
 using Eco.EM.Framework.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using StrangeCloud.Service.Client; //added
 
 namespace Eco.EM.Framework.API
 {
@@ -67,11 +70,11 @@ namespace Eco.EM.Framework.API
             {
                 { "UserName", user.Name },
                 { "SteamID", user.SteamId?.ToString()},
-                { "SLGID", user.SlgId?.ToString()  },
+                { "SLGID", user.StrangeId?.ToString()  },//Udated variable to SlgId has been replaced with StrangeId
                 { "UserXp", user.UserXP.XP.ToString() },
                 { "Position", user.Position.ToString() },
                 { "Language", user.Language.ToString() },
-                { "AccountLevel", user.AccountLevel.ToString() },
+                //{ "AccountLevel", user.AccountLevel.ToString() },
                 { "Reputation", user.Reputation.ToString() },
                 { "IsActive", user.IsActive.ToString() },
                 { "IsAbandoned", user.IsAbandoned.ToString() },
@@ -101,3 +104,6 @@ namespace Eco.EM.Framework.API
         }
     }
 }
+*/
+
+//Something in the Requests.cs or WebHook.cs files are preventing the webserver from loading, commented out for now

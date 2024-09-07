@@ -73,7 +73,7 @@ namespace Eco.EM.Framework
         {
             const string emWeb = "https://elixrmods.com/api/v1/GetVersions?apikey=uaRVGlDndFUIlwKJ";
             var request = Network.GetRequest(emWeb);
-            return JsonConvert.DeserializeObject<EMRequestObject>(request.Result);
+            return JsonConvert.DeserializeObject<EMRequestObject>(request); //changed to match the what is getting returned with the GetRequest method
         }
 
         // Returns a formatted string of the installed EMPack versions for either console or chat.
@@ -292,7 +292,7 @@ namespace Eco.EM.Framework
         public static void GetInit()
         {
             EMVersion(true, out string _);
-            WebHook.PostToWebhook();
+            //WebHook.PostToWebhook(); //Commented out with the webhook temporarily removed
             LoggingUtils.Write(modVersion);
         }
 
@@ -302,7 +302,7 @@ namespace Eco.EM.Framework
             modVersion = string.Empty;
             CheckEMVersion();
             if (BasePlugin.Obj.Config.PostToDiscord && !string.IsNullOrWhiteSpace(needsUpdate))
-                WebHook.PostToWebhook();
+                //WebHook.PostToWebhook(); //Commented out with the webhook temporarily removed
             LoggingUtils.Write(needsUpdate);
         }
 

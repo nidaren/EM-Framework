@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<RootNamespace>Eco.EM.Framework</RootNamespace>
-		<Version>3.5.4</Version>
+		<Version>3.5.5</Version> 
 		<PackageId>ElixrMods.Framework</PackageId>
 		<Authors>Elixr Solutions</Authors>
 		<Product>EM Framework</Product>
@@ -18,7 +18,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<OutputPath>..\bin\10\Framework\</OutputPath>
+		<OutputPath>..\bin\11\Framework\</OutputPath>
 		<Description>The EM Framework is a bundle of Tools and utilities for Modders of the Game Eco in order to improve their modding experience</Description>
 		<PackageIcon>EMICON-text.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -146,6 +146,12 @@
 			</ItemGroup>
 		</When>
 	</Choose>
+
+	<ItemGroup>
+	  <Reference Include="StrangeCloud.Service.Client.CSharp">
+	    <HintPath>..\dlls\StrangeCloud.Service.Client.CSharp.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Update="Translations.Designer.cs">

@@ -55,7 +55,7 @@ namespace Eco.EM.Framework.Groups
 
         public SimpleGroupUser GetGroupUser(User user) =>
 
-            AllUsers.FirstOrDefault(entry => entry.Name == user.Name && (entry.SlgID == user.SlgId || entry.SteamID == user.SteamId));
+            AllUsers.FirstOrDefault(entry => entry.Name == user.Name && (entry.SlgID == user.StrangeId || entry.SteamID == user.SteamId)); //updated SlgId to StrangeId
 
         public SimpleGroupUser GetGroupUser(IChatClient chatClient)
         {

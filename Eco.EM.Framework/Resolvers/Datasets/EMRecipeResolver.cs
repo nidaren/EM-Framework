@@ -11,6 +11,7 @@ using Eco.Gameplay.Skills;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using Eco.Gameplay.Items.Recipes;
+using Eco.Shared.Logging; //Added Logging items were moved to this using making it required
 
 // This mod is created by Elixr Mods for Eco under the SLG TOS. 
 // Please feel free to join our community Discord which aims to brings together modders of Eco to share knowledge, 
@@ -330,7 +331,7 @@ namespace Eco.EM.Framework.Resolvers
         private static IDynamicValue CreateLaborInCaloriesValue(float start, Type skillType)
         {
             var strategy = (ModificationStrategy)skillType.GetField("MultiplicativeStrategy")!.GetValue(null);
-            return new SkillModifiedValue(start, strategy, skillType, Localizer.DoStr("calories of labor"), DynamicValueType.LaborEfficiency);
+            return new SkillModifiedValue(start, strategy, skillType, skillType.GetType(), Localizer.DoStr("calories of labor"), DynamicValueType.LaborEfficiency); //Method was changed to require  skillType.GetType(), to be added
         }
         #endregion
 
