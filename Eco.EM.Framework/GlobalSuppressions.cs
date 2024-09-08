@@ -7,3 +7,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
 [assembly: SuppressMessage("Style", "IDE1006:Naming Styles")]
+[assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter")]

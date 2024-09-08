@@ -73,7 +73,7 @@ namespace Eco.EM.Framework
         {
             const string emWeb = "https://elixrmods.com/api/v1/GetVersions?apikey=uaRVGlDndFUIlwKJ";
             var request = Network.GetRequest(emWeb);
-            return JsonConvert.DeserializeObject<EMRequestObject>(request.Result);
+            return JsonConvert.DeserializeObject<EMRequestObject>(request);
         }
 
         // Returns a formatted string of the installed EMPack versions for either console or chat.

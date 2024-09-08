@@ -8,6 +8,7 @@ using Eco.Gameplay.Items;
 using Eco.Gameplay.Items.Recipes;
 using Eco.Gameplay.Skills;
 using Eco.Shared.Localization;
+using Eco.Shared.Logging;
 using Eco.Shared.Utils;
 using Newtonsoft.Json;
 using System;
@@ -23,7 +24,7 @@ namespace Eco.EM.Framework.Utils
     [LocDisplayName("EM Vanilla Recipe Export")]
     public class JSONRecipeExporter : IModKitPlugin, ICommandablePlugin
     {
-        internal class RecipeData
+        public class RecipeData
         {
             public List<string> CraftStation { get; set; } = new List<string>();
             public List<SkillData> SkillsNeeded { get; set; } = new List<SkillData>();
@@ -35,13 +36,13 @@ namespace Eco.EM.Framework.Utils
             public List<ProductData> Products { get; set; } = new List<ProductData>();
         }
 
-        internal class SkillData
+        public class SkillData
         {
             public string Skill = "nil";
             public string Level = "nil";
         }
 
-        internal class IngredientData
+        public class IngredientData
         {
             public string Type = "nil";
             public string DisplayName = "nil";
@@ -49,7 +50,7 @@ namespace Eco.EM.Framework.Utils
             public string isStatic = "nil";
         }
 
-        internal class ProductData
+        public class ProductData
         {
             public string DisplayName = "nil";
             public string Quantity = "nil";

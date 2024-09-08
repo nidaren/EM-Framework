@@ -2,6 +2,7 @@
 using Eco.Shared.Properties;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
+using StrangeCloud.Service.Client.Contracts; //added but may not be needed
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using static Eco.EM.Framework.WebHook;
 
 namespace Eco.EM.Framework.Networking
 {
@@ -19,7 +19,7 @@ namespace Eco.EM.Framework.Networking
         private readonly static string jsonMediaType = "application/json";
 
 
-        public static async Task<string> GetRequest(string URL)
+        public static string GetRequest(string URL) //changed to synchronous instead of async
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Eco.EM.Framework.Networking
                 httpClient.BaseAddress = new Uri(URL);
                 LoggingUtils.Debug(PostData);
 
-                StringContent strContent = new StringContent(PostData, Encoding.UTF8, jsonMediaType);
+                StringContent strContent = new(PostData, Encoding.UTF8, jsonMediaType); // Simplified declaration
                 HttpResponseMessage responseMessage = await httpClient.PostAsync(httpClient.BaseAddress, strContent).ConfigureAwait(false);
                 return await responseMessage.Content.ReadAsStringAsync();
             }
@@ -76,6 +76,14 @@ namespace Eco.EM.Framework.Networking
             {
                 return e.Message;
             }
+        }
+        //Added method to convert the HttpResponse to string
+        //All of the following changes were in an attempt to get the Framework to stop making hte webserver not load.
+        //Left changes as they did update the methods to more modern methods
+        public static string ContentToString(this Task<HttpResponseMessage> httpContent)
+        {
+            var readAsStringAsync = httpContent.ContentToString();
+            return readAsStringAsync;
         }
 
         public static string PostRequestResponse(string URL, Dictionary<string, string> Parameters)
@@ -89,8 +97,9 @@ namespace Eco.EM.Framework.Networking
                         URL += $"{parameter.Key}={parameter.Value}";
                     }
 
-                using WebClient client = new();
-                return client.UploadString(URL, "POST", string.Empty);
+                using HttpClient client = new(); //updated to using HttpClient to get away from outdated Webclient
+                string result = ContentToString(client.PostAsync(URL, content: null)); //Sent result to contenttostring method to convert to string
+                return result;//Return result as string
             }
             catch (Exception e)
             {

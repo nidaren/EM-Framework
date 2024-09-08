@@ -23,7 +23,7 @@ namespace Eco.EM.Framework.Groups
         }
 
         // May return null if not set to create, so make sure to protect for those cases.
-        public Group GetorAddGroup(string dirtyGroupName, bool create = false)
+        public Group GetOrAddGroup(string dirtyGroupName, bool create = false)
         {
             var cleanGroupName = StringUtils.Sanitize(dirtyGroupName);
             Group group = Groups.FirstOrDefault(g => g.GroupName == cleanGroupName);
@@ -55,7 +55,7 @@ namespace Eco.EM.Framework.Groups
 
         public SimpleGroupUser GetGroupUser(User user) =>
 
-            AllUsers.FirstOrDefault(entry => entry.Name == user.Name && (entry.SlgID == user.SlgId || entry.SteamID == user.SteamId));
+            AllUsers.FirstOrDefault(entry => entry.Name == user.Name && (entry.SlgID == user.StrangeId || entry.SteamID == user.SteamId));
 
         public SimpleGroupUser GetGroupUser(IChatClient chatClient)
         {

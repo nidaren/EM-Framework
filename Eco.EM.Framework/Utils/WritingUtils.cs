@@ -1,4 +1,5 @@
-﻿using Eco.Shared.Utils;
+﻿using Eco.Shared.Logging;
+using Eco.Shared.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;

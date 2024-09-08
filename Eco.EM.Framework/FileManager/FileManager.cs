@@ -6,6 +6,7 @@ using System.IO;
 
 namespace Eco.EM.Framework.FileManager
 {
+    using Eco.Shared.Logging;
     using Eco.Shared.Utils;
     using System;
 

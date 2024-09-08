@@ -18,60 +18,59 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Eco.EM.Framework.API
 {
     [AllowAnonymous, Route("elixr-mods/framework/api/v1")]
-    public class Requests : Controller
+    public class RequestsController : Controller
     {
-        [AllowAnonymous, HttpGet("get-recipes")]
-        public IActionResult GetRecipes()
+        [HttpGet("get-recipes")]
+        public string GetRecipes()
         {
             if (BasePlugin.Obj.Config.EnableWebAPI)
             {
                 var result = JSONRecipeExporter.BuildExportData();
 
                 if (result is null)
-                    return StatusCode(500);
+                    return "No Data To Display";
                 else
-                    return Ok(result);
+                    return JsonConvert.SerializeObject(result);
             }
             else
-                return BadRequest(403);
+                return null;
         }
 
-        [AllowAnonymous, HttpGet("get-prices/{includeOutOfStock:bool?}")]
-        public IActionResult GetPrices(bool includeOutOfStock = false)
+        [HttpGet("get-prices")]
+        public string GetPrices([FromQuery]bool includeOutOfStock = false)
         {
-            List<OfferedItem> noResult = new();
+            string noResult = "No Items Found";
             if (BasePlugin.Obj.Config.EnableWebAPI)
             {
                 var result = ShopUtils.GetAllItems(includeOutOfStock).OrderBy(o => o.StoreName);
                 if (result is null)
-                    return Ok(noResult);
+                    return noResult;
                 else
-                    return Ok(result);
+                    return JsonConvert.SerializeObject(result);
             }
             else
-                return BadRequest(403);
+                return null;
         }
         
-        [AllowAnonymous, HttpGet("lookup-user/{username:string?}")]
-        public IActionResult LookupUser(string username = "")
+        [HttpGet("lookup-user")]
+        public string LookupUser([FromQuery]string username = "")
         {
             if (BasePlugin.Obj.Config.EnableWebAPI)
             {
                 if (string.IsNullOrWhiteSpace(username))
-                    return Ok("You must provide a user");
+                    return "You must provide a user";
                 var user = UserManager.FindUser(username);
                 if (user is null)
-                    return Ok("No User Found");
+                    return "No User Found";
 
                 Dictionary<string, string> UserDetails = new()
             {
                 { "UserName", user.Name },
                 { "SteamID", user.SteamId?.ToString()},
-                { "SLGID", user.SlgId?.ToString()  },
+                { "SLGID", user.StrangeId?.ToString()  },
                 { "UserXp", user.UserXP.XP.ToString() },
                 { "Position", user.Position.ToString() },
                 { "Language", user.Language.ToString() },
-                { "AccountLevel", user.AccountLevel.ToString() },
                 { "Reputation", user.Reputation.ToString() },
                 { "IsActive", user.IsActive.ToString() },
                 { "IsAbandoned", user.IsAbandoned.ToString() },
@@ -82,22 +81,22 @@ namespace Eco.EM.Framework.API
                 { "IsOnline", user.IsOnline.ToString() }
             };
 
-                return Ok(UserDetails);
+                return JsonConvert.SerializeObject(UserDetails);
             }
             else
-                return BadRequest(403);
+                return null;
 
         }
 
-        [AllowAnonymous, HttpGet("api-check")]
-        public IActionResult Test()
+        [HttpGet("api-check")]
+        public string Test()
         {
             if (BasePlugin.Obj.Config.EnableWebAPI)
             {
-                return Ok("We Are Working Chief! API System is enabled");
+                return "We Are Working Chief! API System is enabled";
             }
             else
-                return BadRequest(403);
+                return null;
         }
     }
 }

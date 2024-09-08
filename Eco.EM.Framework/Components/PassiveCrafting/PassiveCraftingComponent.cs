@@ -11,6 +11,7 @@ using Eco.Shared.Localization;
 using Eco.Shared.Utils;
 using Eco.Gameplay.Components.Storage;
 using Eco.Gameplay.Items.Recipes;
+using Eco.Shared.Logging;
 
 // This mod is created by Elixr Mods for Eco under the SLG TOS. 
 // Please feel free to join our community Discord which aims to brings together modders of Eco to share knowledge, 
@@ -123,7 +124,7 @@ namespace Eco.EM.Framework.Components
             var inv = Parent.GetComponent<PublicStorageComponent>().Inventory;
             var changes = InventoryChangeSet.New(inv);
 
-            foreach (var e in Outputs) { changes.AddItems(e.Item1.GetType(), (int)Math.Ceiling(e.Item2)); }
+            foreach (var e in Outputs) { changes.AddItem(Item.Get(e.Item1.GetType()), (int)Math.Ceiling(e.Item2)); }
             var result = changes.CanApplyNonDisposing();
 
             if (result)

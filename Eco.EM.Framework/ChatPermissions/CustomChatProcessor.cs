@@ -8,6 +8,7 @@ using System;
 using Eco.Core.Utils.Logging;
 using Eco.Shared.Utils;
 using Eco.Gameplay.Systems.Messaging.Chat.Commands;
+using System.Collections.Generic;
 
 namespace Eco.EM.Framework.Permissions
 {
@@ -15,14 +16,19 @@ namespace Eco.EM.Framework.Permissions
     public class EMCustomChatProcessor : ICommandProcessorHandler
     {
         private static readonly Func<ChatCommand, IChatClient, bool> commandProcessor;
+        private static readonly Dictionary<string, ChatCommand>[] commandsByLanguage = new Dictionary<string, ChatCommand>[Enum.GetValues(typeof(SupportedLanguage)).OfType<SupportedLanguage>().Max(x => (int)x) + 1]; // mapping between parent command or alias to ChatCommand object
 
-        public EMCustomChatProcessor() { }
+        public EMCustomChatProcessor() 
+        {
+            commandsByLanguage[(int)SupportedLanguage.English] = new Dictionary<string, ChatCommand>();
+        }
 
         [CommandProcessor]
         public static bool EMProcessCommand(ChatCommand command, IChatClient chatClient)
         {
             var level = chatClient.GetChatAuthLevel();
-            var adapter = CommandGroupsManager.FindAdapter(Localizer.DoStr(command.Name));
+            var adapter = CommandGroupsManager.FindAdapter(command.Name);
+
             if (adapter == null)
             {
                 chatClient.ErrorLocStr(string.Format(Defaults.appName + Localizer.DoStr("Command {0} not found"), command.Name));
@@ -53,5 +59,27 @@ namespace Eco.EM.Framework.Permissions
             commandProcessor?.Invoke(command, chatClient);
             return false;
         }
+        private static bool TryGetCommand(SupportedLanguage language, string name, out ChatCommand command) => GetCommandMapping(language).TryGetValue(name, out command) || GetCommandMapping(SupportedLanguage.English).TryGetValue(name, out command);
+
+        /// <summary> Returns command mapping for <paramref name="language"/>. </summary>
+        private static Dictionary<string, ChatCommand> GetCommandMapping(SupportedLanguage language)
+        {
+            var mapping = commandsByLanguage[(int)language];
+            if (mapping == null)
+            {
+                mapping = new Dictionary<string, ChatCommand>();
+                foreach (var command in commandsByLanguage[(int)SupportedLanguage.English].Values)
+                {
+                    var localizedCommand = command.WithLanguage(language);
+                    mapping[localizedCommand.Name] = localizedCommand;
+                    if (localizedCommand.ShortCut.IsSet())
+                        mapping[localizedCommand.ShortCut] = localizedCommand;
+                }
+
+                commandsByLanguage[(int)language] = mapping;
+            }
+            return mapping;
+        }
     }
+
 }

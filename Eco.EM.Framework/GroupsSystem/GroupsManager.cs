@@ -65,29 +65,29 @@ namespace Eco.EM.Framework.Groups
         {
             if (Data.Groups.Count == 0)
             {
-                Data.GetorAddGroup("admin", true);
-                Data.GetorAddGroup("default", true);
+                Data.GetOrAddGroup("admin", true);
+                Data.GetOrAddGroup("default", true);
             }
 
             foreach (var usr in PlayerUtils.Users)
             {
                 lock (Data.AllUsers)
                 {
-                    if (!Data.AllUsers.Any(entry => entry.Name == usr.Name && (entry.SlgID == usr.SlgId || entry.SteamID == usr.SteamId)))
+                    if (!Data.AllUsers.Any(entry => entry.Name == usr.Name && (entry.SlgID == usr.StrangeId || entry.SteamID == usr.SteamId)))
                     {
-                        Data.AllUsers.Add(new SimpleGroupUser(usr.Name, usr.SlgId ?? "", usr.SteamId ?? ""));
+                        Data.AllUsers.Add(new SimpleGroupUser(usr.Name, usr.StrangeId ?? "", usr.SteamId ?? ""));
                         SaveData();
                     }
 
                     /* Only implement if we think this is necessary , it will basically disable server configs for TP's, Homes and Warps*/
                     Group group;
 
-                    if (usr.IsAdminOrDev)
-                        group = Data.GetorAddGroup("admin");
+                    if (usr.IsAdmin || usr.IsSlgDev)
+                        group = Data.GetOrAddGroup("admin");
                     else
-                        group = Data.GetorAddGroup("default");
+                        group = Data.GetOrAddGroup("default");
 
-                    if (!group.GroupUsers.Any(entry => entry.Name == usr.Name && (entry.SlgID == usr.SlgId || entry.SteamID == usr.SteamId)))
+                    if (!group.GroupUsers.Any(entry => entry.Name == usr.Name && (entry.SlgID == usr.StrangeId || entry.SteamID == usr.SteamId)))
                     {
                         group.AddUser(usr);
                         SaveData();
@@ -99,9 +99,9 @@ namespace Eco.EM.Framework.Groups
             {
                 lock (Data.AllUsers)
                 {
-                    if (!Data.AllUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.SlgId || entry.SteamID == u.SteamId)))
+                    if (!Data.AllUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.StrangeId || entry.SteamID == u.SteamId)))
                     {
-                        Data.AllUsers.Add(new SimpleGroupUser(u.Name, u.SlgId ?? "", u.SteamId ?? ""));
+                        Data.AllUsers.Add(new SimpleGroupUser(u.Name, u.StrangeId ?? "", u.SteamId ?? ""));
                         SaveData();
                     }
 
@@ -109,11 +109,11 @@ namespace Eco.EM.Framework.Groups
                     Group group;
 
                     if (u.IsAdmin)
-                        group = Data.GetorAddGroup("admin");
+                        group = Data.GetOrAddGroup("admin");
                     else
-                        group = Data.GetorAddGroup("default");
+                        group = Data.GetOrAddGroup("default");
 
-                    if (!group.GroupUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.SlgId || entry.SteamID == u.SteamId)))
+                    if (!group.GroupUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.StrangeId || entry.SteamID == u.SteamId)))
                     {
                         group.AddUser(u);
                         SaveData();
@@ -142,7 +142,7 @@ namespace Eco.EM.Framework.Groups
                 return;
             }
 
-            var agroup = Data.GetorAddGroup("admin");
+            var agroup = Data.GetOrAddGroup("admin");
 
             //We have to use FindUser as the adminId passed by the event can be any Id, including user's name.
             //No null check required here as it is already verified above.
@@ -151,7 +151,7 @@ namespace Eco.EM.Framework.Groups
             switch (added)
             {
                 //When adding, ensure that user does not already exist among admins on EM side.
-                case true when !agroup.GroupUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.SlgId || entry.SteamID == u.SteamId)):
+                case true when !agroup.GroupUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.StrangeId || entry.SteamID == u.SteamId)):
                 {
                     lock (Data.AllUsers)
                     {
@@ -162,7 +162,7 @@ namespace Eco.EM.Framework.Groups
                     break;
                 }
                 //When removing, ensure that user actually exists in the admin group on EM side.
-                case false when agroup.GroupUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.SlgId || entry.SteamID == u.SteamId)):
+                case false when agroup.GroupUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.StrangeId || entry.SteamID == u.SteamId)):
                 {
                     lock (Data.AllUsers)
                     {

@@ -1,5 +1,6 @@
 ﻿namespace Eco.EM.Framework.Helpers
 {
+    using Eco.Shared.Time;
     using Eco.Shared.Utils;
     using Eco.Simulation;
     using Eco.Simulation.Time;

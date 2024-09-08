@@ -10,6 +10,7 @@ using Eco.Gameplay.Systems.Messaging.Notifications;
 using Eco.ModKit.Internal;
 using Eco.Shared.IoC;
 using Eco.Shared.Localization;
+using Eco.Shared.Logging;
 using Eco.Shared.Services;
 using Eco.Shared.Utils;
 using User = Eco.Gameplay.Players.User;

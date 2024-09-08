@@ -1,5 +1,6 @@
 ﻿using Eco.Core.Utils.Logging;
 using Eco.Shared.Localization;
+using Eco.Shared.Logging; //Added Logging items were moved to this using making it required
 using Eco.Shared.Utils;
 using NLog;
 using System;
@@ -48,7 +49,7 @@ namespace Eco.EM.Framework.Logging
 
         public static void Warning(string s) => Logger.WriteWarning($"[{DateTime.Now:hh:mm:ss}] " + s);
 
-        public static void Error(string s) => Logger.WriteError($"[{DateTime.Now:hh:mm:ss}] " + s);
+        public static void Error(string s) => Logger.WriteError($"[{DateTime.Now:hh:mm:ss}] {s}"); //Format change
 
         public static void LogTypeSelect(string message, LogType logType)
         {

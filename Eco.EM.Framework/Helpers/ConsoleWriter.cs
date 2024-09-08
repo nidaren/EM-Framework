@@ -13,6 +13,7 @@ namespace Eco.EM.Framework.Console
     using System.Threading.Tasks;
     using System.Reflection;
     using Eco.Core.Utils.Logging;
+    using Eco.Shared.Logging;
 
     public class ConsoleWriter
     {

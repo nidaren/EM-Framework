@@ -1,5 +1,6 @@
 ﻿using Eco.Core.Utils;
 using Eco.Shared.Localization;
+using Eco.Shared.Logging;
 using Eco.Shared.Utils;
 using System.Collections.Generic;
 using System.Linq;

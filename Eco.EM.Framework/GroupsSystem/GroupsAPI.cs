@@ -11,7 +11,7 @@ namespace Eco.EM.Framework.Groups
     {
         public Group GetGroup(string group, bool create = false)
         {
-            return GroupsManager.Data.GetorAddGroup(group, create);
+            return GroupsManager.Data.GetOrAddGroup(group, create);
         }
 
         public List<Group> AllGroups()
