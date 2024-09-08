@@ -42,7 +42,7 @@ namespace Eco.EM.Framework.API
             string noResult = "No Items Found";
             if (BasePlugin.Obj.Config.EnableWebAPI)
             {
-                var result = ShopUtils.GetAllItems(includeOutOfStock).OrderBy(o => o.StoreName);
+                var result = ShopUtils.GetAllItems(includeOutOfStock);
                 if (result is null)
                     return noResult;
                 else
