@@ -65,31 +65,29 @@ namespace Eco.EM.Framework.Groups
         {
             if (Data.Groups.Count == 0)
             {
-                Data.GetorAddGroup("admin", true);
-                Data.GetorAddGroup("default", true);
+                Data.GetOrAddGroup("admin", true);
+                Data.GetOrAddGroup("default", true);
             }
 
             foreach (var usr in PlayerUtils.Users)
             {
                 lock (Data.AllUsers)
                 {
-                    if (!Data.AllUsers.Any(entry => entry.Name == usr.Name && (entry.SlgID == usr.StrangeId || entry.SteamID == usr.SteamId))) //Updated SldId to StrangeId
+                    if (!Data.AllUsers.Any(entry => entry.Name == usr.Name && (entry.SlgID == usr.StrangeId || entry.SteamID == usr.SteamId)))
                     {
-                        Data.AllUsers.Add(new SimpleGroupUser(usr.Name, usr.StrangeId ?? "", usr.SteamId ?? "")); //Updated SldId to StrangeId
+                        Data.AllUsers.Add(new SimpleGroupUser(usr.Name, usr.StrangeId ?? "", usr.SteamId ?? ""));
                         SaveData();
                     }
 
                     /* Only implement if we think this is necessary , it will basically disable server configs for TP's, Homes and Warps*/
                     Group group;
 
-                    if (usr.IsAdmin) //IsAdminorIsDev has been removed replaced with 2 if statements to check for admin or dev and assign to admin
-                        group = Data.GetorAddGroup("admin");
-                    else if (usr.IsSlgDev)
-                        group = Data.GetorAddGroup("admin");
+                    if (usr.IsAdmin || usr.IsSlgDev)
+                        group = Data.GetOrAddGroup("admin");
                     else
-                        group = Data.GetorAddGroup("default");
+                        group = Data.GetOrAddGroup("default");
 
-                    if (!group.GroupUsers.Any(entry => entry.Name == usr.Name && (entry.SlgID == usr.StrangeId || entry.SteamID == usr.SteamId))) //Update SldId to StrangeId
+                    if (!group.GroupUsers.Any(entry => entry.Name == usr.Name && (entry.SlgID == usr.StrangeId || entry.SteamID == usr.SteamId)))
                     {
                         group.AddUser(usr);
                         SaveData();
@@ -111,9 +109,9 @@ namespace Eco.EM.Framework.Groups
                     Group group;
 
                     if (u.IsAdmin)
-                        group = Data.GetorAddGroup("admin");
+                        group = Data.GetOrAddGroup("admin");
                     else
-                        group = Data.GetorAddGroup("default");
+                        group = Data.GetOrAddGroup("default");
 
                     if (!group.GroupUsers.Any(entry => entry.Name == u.Name && (entry.SlgID == u.StrangeId || entry.SteamID == u.SteamId)))
                     {
@@ -144,7 +142,7 @@ namespace Eco.EM.Framework.Groups
                 return;
             }
 
-            var agroup = Data.GetorAddGroup("admin");
+            var agroup = Data.GetOrAddGroup("admin");
 
             //We have to use FindUser as the adminId passed by the event can be any Id, including user's name.
             //No null check required here as it is already verified above.

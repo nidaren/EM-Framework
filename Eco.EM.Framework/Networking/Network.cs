@@ -10,7 +10,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-//using static Eco.EM.Framework.WebHook; //Commented out untill the WebHook or Requests files stop causing webserver to not load
 
 namespace Eco.EM.Framework.Networking
 {

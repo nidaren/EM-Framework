@@ -1,6 +1,6 @@
 ﻿namespace Eco.EM.Framework.Helpers
 {
-    using Eco.Shared.Time; //Added Time items were moved to this using making it required
+    using Eco.Shared.Time;
     using Eco.Shared.Utils;
     using Eco.Simulation;
     using Eco.Simulation.Time;

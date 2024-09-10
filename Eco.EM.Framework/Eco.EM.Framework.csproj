@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<RootNamespace>Eco.EM.Framework</RootNamespace>
-		<Version>3.5.5</Version> 
+		<Version>3.6.0</Version>
 		<PackageId>ElixrMods.Framework</PackageId>
 		<Authors>Elixr Solutions</Authors>
 		<Product>EM Framework</Product>
@@ -18,7 +18,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<OutputPath>..\bin\11\Framework\</OutputPath>
+		<OutputPath>..\bin\10\Framework\</OutputPath>
 		<Description>The EM Framework is a bundle of Tools and utilities for Modders of the Game Eco in order to improve their modding experience</Description>
 		<PackageIcon>EMICON-text.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -142,16 +142,10 @@
 		</When>
 		<When Condition=" '$(Configuration)|$(Platform)' != 'Debug|AnyCPU' AND '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
 			<ItemGroup>
-				<PackageReference Include="Eco.ReferenceAssemblies" Version="0.10.2.1-beta-release-647" />
+				<PackageReference Include="Eco.ReferenceAssemblies" Version="0.11.0.4-beta-release-722" />
 			</ItemGroup>
 		</When>
 	</Choose>
-
-	<ItemGroup>
-	  <Reference Include="StrangeCloud.Service.Client.CSharp">
-	    <HintPath>..\dlls\StrangeCloud.Service.Client.CSharp.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Update="Translations.Designer.cs">

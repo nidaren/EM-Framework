@@ -197,7 +197,10 @@ namespace Eco.EM.Framework.Utils
                     }
                 }
                 if (Items.Count > 0)
+                {
+                    Items.OrderBy(o => o.StoreName);
                     return Items;
+                }
                 else
                     return null;
             }

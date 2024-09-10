@@ -1,4 +1,4 @@
-﻿using Eco.Shared.Logging; //Added Logging items were moved to this using making it required
+﻿using Eco.Shared.Logging;
 using Eco.Shared.Utils;
 using System;
 using System.Collections.Generic;

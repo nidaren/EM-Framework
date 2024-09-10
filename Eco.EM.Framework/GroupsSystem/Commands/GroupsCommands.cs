@@ -19,7 +19,7 @@ namespace Eco.EM.Framework.Groups
         [ChatSubCommand("Groups", "Used to Create a New Group", "grp-add", ChatAuthorizationLevel.Admin)]
         public static void AddGroup(IChatClient user, string groupName)
         {
-            Group group = GroupsManager.Data.GetorAddGroup(groupName, true);
+            Group group = GroupsManager.Data.GetOrAddGroup(groupName, true);
             user.MsgLocStr($"Group {groupName} was created");
 
             GroupsManager.API.SaveData();
@@ -73,7 +73,7 @@ namespace Eco.EM.Framework.Groups
         [ChatSubCommand("Groups", "Used to print a list permissions assigned to a group", "grp-perms", ChatAuthorizationLevel.Admin)]
         public static void GroupPermissions(IChatClient client, string groupName)
         {
-            Group group = GroupsManager.Data.GetorAddGroup(groupName, true);
+            Group group = GroupsManager.Data.GetOrAddGroup(groupName, true);
 
             StringBuilder sb = new();
             group.Permissions.ForEach(perm =>
@@ -96,7 +96,7 @@ namespace Eco.EM.Framework.Groups
         [ChatSubCommand("Groups", "Used to add a user to a group", "grp-adduser", ChatAuthorizationLevel.Admin)]
         public static void AddUserToGroup(IChatClient user, string userName, string groupName)
         {
-            Group group = GroupsManager.Data.GetorAddGroup(groupName, true);
+            Group group = GroupsManager.Data.GetOrAddGroup(groupName, true);
             User toAdd = PlayerUtils.GetUserByName(userName);
             if (toAdd == null)
             {
@@ -115,7 +115,7 @@ namespace Eco.EM.Framework.Groups
         [ChatSubCommand("Groups", "Used to remove a user from a group", "grp-remuser", ChatAuthorizationLevel.Admin)]
         public static void RemoveUserFromGroup(IChatClient user, string userName, string groupName)
         {
-            Group group = GroupsManager.Data.GetorAddGroup(groupName, false);
+            Group group = GroupsManager.Data.GetOrAddGroup(groupName, false);
             if (group == null)
             {
                 user.ErrorLocStr($"Group {groupName} was unable to be found.");

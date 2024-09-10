@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Eco.Gameplay.EcopediaRoot;
 using Eco.Shared.Localization;
-using Eco.Shared.Logging; //Added Logging items were moved to this using making it required
+using Eco.Shared.Logging;
 using Eco.Shared.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -94,7 +94,7 @@ namespace Eco.EM.Framework.Utils
             {
                 //debugging
                 Logging.LoggingUtils.Error($"There was an error adding the ecopedia file for this mod: {modName}, Error was: \n{e}\n\nIf the error was about a null reference for the stream, then your path to your file is not Correct. Please Check the path: {resourceName}");
-                Log.WriteErrorLineLoc($"There was an error adding an ecopedia file for this mod: {modName}.");
+                Log.WriteErrorLineLoc($"There was an error adding an cyclopedia file for this mod: {modName}.");
                 return false;
             }
             Random rnd = new();

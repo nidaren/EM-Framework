@@ -371,8 +371,8 @@ namespace Eco.EM.Framework.Resolvers
                     }
                     else
                     {
-                        if(!newModels.Contains(dModel))
-                        newModels.Add(dModel);
+                        if (!newModels.Contains(dModel))
+                            newModels.Add(dModel);
                     }
                 }
             }
