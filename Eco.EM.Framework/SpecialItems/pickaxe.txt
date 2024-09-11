@@ -43,8 +43,7 @@ namespace Eco.Mods.TechTree
 
         [SyncToView] public override IDynamicValue PerkDamage       => base.PerkDamage;
         public override              int           FullRepairAmount => 1;
-        public override              ItemCategory  ItemCategory     => ItemCategory.Pickaxe;
-
+//Update pickaxeitem file. no longer has ItemCategory
         //Todo, integrate into interactor system
         public override bool CanPickUpItemStack(ItemStack stack)
         {
