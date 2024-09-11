@@ -22,6 +22,10 @@ namespace Eco.EM.Framework.Resolvers
                 RunAxeMurdererResolver();
             if (!EMConfigurePlugin.Config.EnableAxeMurdererMod) //Add call to remove axe murderer mod
                 RemoveAxeMurderer();
+            if (EMConfigurePlugin.Config.EnableTampableDesertSand) // Add call to tamp-able desert sand enable resolver
+                RunTampableDesertSandResolver();
+            if (!EMConfigurePlugin.Config.EnableTampableDesertSand) //Add call to remove tamp-able desert sand mod
+                RemoveTampableDesertSand();
         }
 
         private static void RunLuckyStrikeResolver()
@@ -57,7 +61,7 @@ namespace Eco.EM.Framework.Resolvers
 
         }
 
-        // Uses template to crete axeItem override file that adds the ability to damage aniumals with an axe
+        // Uses template to create axeItem override file that adds the ability to damage aniumals with an axe
         private static void RunAxeMurdererResolver()
         {
 
@@ -77,6 +81,41 @@ namespace Eco.EM.Framework.Resolvers
             var alsdir = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Mods" + Path.DirectorySeparatorChar + "UserCode" + Path.DirectorySeparatorChar + "Tools";
             string f = Path.Combine(alsdir, "AxeItem.override.cs");
             if (File.Exists(f)) { File.Delete(f); }
+
+        }
+        // Uses template to create Road Tool and dirt road override files that adds the ability to damage aniumals with an axe
+        private static void RunTampableDesertSandResolver()
+        {
+
+            var alsdir = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Mods" + Path.DirectorySeparatorChar + "UserCode" + Path.DirectorySeparatorChar + "Tools";
+            var rddir = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Mods" + Path.DirectorySeparatorChar + "UserCode" + Path.DirectorySeparatorChar + "Blocks";
+
+            if (!Directory.Exists(alsdir))
+            {
+                Directory.CreateDirectory(alsdir);
+            }
+            if (!Directory.Exists(rddir))
+            {
+                Directory.CreateDirectory(rddir);
+            }
+            if (!File.Exists(Path.Combine(alsdir, "RoadToolItem.override.cs")))
+                WritingUtils.WriteFromEmbeddedResource("Eco.EM.Framework.SpecialItems", "roadtool.txt", alsdir, ".cs", specificFileName: "RoadToolItem.override");
+            
+            if (!File.Exists(Path.Combine(rddir, "DirtRoad.override.cs")))
+                WritingUtils.WriteFromEmbeddedResource("Eco.EM.Framework.SpecialItems", "dirtroad.txt", rddir, ".cs", specificFileName: "DirtRoad.override");
+
+        }
+
+        // Removes the Road Tool and dirt road override files
+        private static void RemoveTampableDesertSand()
+        {
+            var alsdir = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Mods" + Path.DirectorySeparatorChar + "UserCode" + Path.DirectorySeparatorChar + "Tools";
+            string f = Path.Combine(alsdir, "RoadToolItem.override.cs");
+            if (File.Exists(f)) { File.Delete(f); }
+
+            var rddir = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Mods" + Path.DirectorySeparatorChar + "UserCode" + Path.DirectorySeparatorChar + "Blocks";
+            string rf = Path.Combine(rddir, "DirtRoad.override.cs");
+            if (File.Exists(rf)) { File.Delete(rf); }
 
         }
     }

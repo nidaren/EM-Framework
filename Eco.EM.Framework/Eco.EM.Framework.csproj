@@ -49,6 +49,8 @@
 		<None Remove="SpecialItems\lumberStockpile.txt" />
 		<None Remove="SpecialItems\pickaxe.txt" />
     <None Remove="SpecialItems\axe.txt" />
+    <None Remove="SpecialItems\roadtool.txt" />
+    <None Remove="SpecialItems\dirtroad.txt" />
 		<None Remove="SpecialItems\smallStockpile.txt" />
 		<None Remove="SpecialItems\Stockpile.txt" />
 	</ItemGroup>
@@ -58,7 +60,9 @@
 		<EmbeddedResource Include="Ecopedia\ModDocumentation.xml" />
 		<EmbeddedResource Include="SpecialItems\pickaxe.txt" />
     <EmbeddedResource Include="SpecialItems\axe.txt" />
-		<EmbeddedResource Include="SpecialItems\largelumberStockpile.txt" />
+    <EmbeddedResource Include="SpecialItems\roadtool.txt" />
+    <EmbeddedResource Include="SpecialItems\dirtroad.txt" />
+    <EmbeddedResource Include="SpecialItems\largelumberStockpile.txt" />
 		<EmbeddedResource Include="SpecialItems\lumberStockpile.txt" />
 		<EmbeddedResource Include="SpecialItems\smallStockpile.txt" />
 		<EmbeddedResource Include="SpecialItems\Stockpile.txt" />
