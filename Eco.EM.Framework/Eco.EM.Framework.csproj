@@ -48,13 +48,8 @@
 		<None Remove="SpecialItems\largelumberStockpile.txt" />
 		<None Remove="SpecialItems\lumberStockpile.txt" />
 		<None Remove="SpecialItems\pickaxe.txt" />
-		<None Remove="SpecialItems\Shovel.txt" />
 		<None Remove="SpecialItems\smallStockpile.txt" />
 		<None Remove="SpecialItems\Stockpile.txt" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Include="SpecialItems\shovel.txt" />
 	</ItemGroup>
 
 	<ItemGroup>
