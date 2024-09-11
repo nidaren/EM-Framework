@@ -12,5 +12,9 @@ namespace Eco.EM.Framework.Resolvers
         [LocDisplayName("Enable Lucky Strike For All")]
         [LocDescription("Enables Lucky Strike as a Default Thing, which means the talent is no longer needed, Requires Manual Removal after Disable. Requires Server Restart.")]
         public bool EnableGlobalLuckyStrike { get; set; }
+
+        [LocDisplayName("Enable Axe animal Damage")]
+        [LocDescription("Enables ability to damage animals using an axe. Requires Server Restart.")]
+        public bool EnableAxeMurdererMod { get; set; }
     }
 }

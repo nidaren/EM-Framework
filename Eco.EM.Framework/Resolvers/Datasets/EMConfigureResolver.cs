@@ -18,6 +18,10 @@ namespace Eco.EM.Framework.Resolvers
                 RunStockpileResolver();
             if (EMConfigurePlugin.Config.EnableGlobalLuckyStrike)
                 RunLuckyStrikeResolver();
+            if (EMConfigurePlugin.Config.EnableAxeMurdererMod) // Add call to axe murderer enable resolver
+                RunAxeMurdererResolver();
+            if (!EMConfigurePlugin.Config.EnableAxeMurdererMod) //Add call to remove axe murderer mod
+                RemoveAxeMurderer();
         }
 
         private static void RunLuckyStrikeResolver()
@@ -50,6 +54,29 @@ namespace Eco.EM.Framework.Resolvers
                 WritingUtils.WriteFromEmbeddedResource("Eco.EM.Framework.SpecialItems", "lumberStockpile.txt", agdir, ".cs", specificFileName: "LumberStockpileObject.override");
             if (!File.Exists(Path.Combine(agdir, "LargeLumberStockpileObject.override.cs")))
                 WritingUtils.WriteFromEmbeddedResource("Eco.EM.Framework.SpecialItems", "largelumberStockpile.txt", agdir, ".cs", specificFileName: "LargeLumberStockpileObject.override");
+
+        }
+
+        // Uses template to crete axeItem override file that adds the ability to damage aniumals with an axe
+        private static void RunAxeMurdererResolver()
+        {
+
+            var alsdir = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Mods" + Path.DirectorySeparatorChar + "UserCode" + Path.DirectorySeparatorChar + "Tools";
+
+            if (!Directory.Exists(alsdir))
+            {
+                Directory.CreateDirectory(alsdir);
+            }
+            if (!File.Exists(Path.Combine(alsdir, "AxeItem.override.cs")))
+                WritingUtils.WriteFromEmbeddedResource("Eco.EM.Framework.SpecialItems", "axe.txt", alsdir, ".cs", specificFileName: "AxeItem.override");
+        }
+
+        // Removes the axeitem override file
+        private static void RemoveAxeMurderer()
+        {
+            var alsdir = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Mods" + Path.DirectorySeparatorChar + "UserCode" + Path.DirectorySeparatorChar + "Tools";
+            string f = Path.Combine(alsdir, "AxeItem.override.cs");
+            if (File.Exists(f)) { File.Delete(f); }
 
         }
     }
