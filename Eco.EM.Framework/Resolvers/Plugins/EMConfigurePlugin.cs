@@ -29,7 +29,11 @@ namespace Eco.EM.Framework.Resolvers
 
 
         public object GetEditObject() => config.Config;
-        public void OnEditObjectChanged(object o, string param) => this.SaveConfig();
+        public void OnEditObjectChanged(object o, string param)
+        {
+            this.SaveConfig();
+            EMConfigureResolver.Initialize(); // allows call to the EMConfigure resolvers whenever a setting is changed in EM configure
+        }
         public string GetStatus() => $"Loaded EM Configure - Recipes Overriden: {EMRecipeResolver.Obj.ModRecipeOverrides?.Count: 0}";
 
         static EMConfigurePlugin()
